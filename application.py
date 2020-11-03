@@ -1,6 +1,7 @@
 import json
 import mmh3
 import torch
+import flask
 from flask import Flask, request
 
 
@@ -55,3 +56,7 @@ def main():
         ensure_ascii=False,
         indent=2
     )
+
+@app.route("/health", methods=['GET'])
+def health():
+    return flask.Response(status=200)
