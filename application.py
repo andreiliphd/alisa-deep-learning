@@ -4,6 +4,7 @@ import torch
 import flask
 from flask import Flask, request
 
+sessionStorage = {}
 
 app = Flask(__name__)
 
@@ -43,6 +44,18 @@ def main():
             "end_session": False
         }
     }
+
+    if request.json['session']['new']:
+        response['response']['text'] = "Привет! Добро пожалловать в навык графовый кот. \
+                                Это приложение использует нейронную сеть в \
+                                качестве демонстрации. Нейронная сеть не была \
+                                натренирована. Используется PyTorch версии " + torch.__version__
+        return json.dumps(
+            response,
+            ensure_ascii=False,
+            indent=2
+        )
+
     request_json = request.json
     hash = mmh3.hash(request_json['request']['original_utterance'])
     norm = hash / 4294967295
@@ -50,7 +63,7 @@ def main():
     output = norm.reshape([1, 1])
     output = model(output)
     argmax = torch.argmax(output, dim=1)
-    response['response']['text'] = int(argmax)
+    response['response']['text'] = "Категория классификации " + str(int(argmax))
     return json.dumps(
         response,
         ensure_ascii=False,
