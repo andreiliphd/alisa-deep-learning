@@ -22,6 +22,7 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: gd-api
         environment_name: GdApi-env
+        use_existing_version_if_available: true
         version_label: gd-api-source-health
         region: us-east-1
         deployment_package: deploy.zip
